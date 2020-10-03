@@ -1,0 +1,59 @@
+/* Resets */
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-size: 100%;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* --------------HEADER-------------- */
+.logo {
+    width: 9.3em;
+}
+
+.menu {
+    background: #9BD2DE;
+    padding: 3em;
+    width: 100%;
+}
+
+.menu ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    list-style: none;
+    font-size: 1em;
+}
+
+.menu a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #000000;
+    margin: 0 1em 0 1em;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+    color: #000000;
+}
+/* --------------HEADER END-------------- */
+
+/* --------------Main-------------- */
+h2 {
+    text-align: center;
+    padding: 1em;
+    font-size: 1.5em;
+}
+
+#cinema-main {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 8em;
+}
+/* --------------Main END-------------- */
