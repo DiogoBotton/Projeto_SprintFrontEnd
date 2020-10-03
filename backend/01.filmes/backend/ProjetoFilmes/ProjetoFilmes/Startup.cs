@@ -75,6 +75,16 @@ namespace ProjetoFilmes
                         ValidAudience = "Filmes.WebApi"
                     };
                 });
+
+            //Necessário acrescentar política de CORS para ser possível o acesso da API com domínios diferentes
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,6 +108,9 @@ namespace ProjetoFilmes
 
             // Define o uso de autenticação
             app.UseAuthentication();
+
+            //Usa a "CorsPolicy" criada anteriormente
+            app.UseCors("CorsPolicy");
 
             // Define o uso do MVC
             app.UseMvc();
