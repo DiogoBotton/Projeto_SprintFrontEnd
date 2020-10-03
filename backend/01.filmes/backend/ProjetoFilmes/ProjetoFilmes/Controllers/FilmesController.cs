@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoFilmes.Domains;
 using ProjetoFilmes.Interfaces;
 using ProjetoFilmes.Repositories;
+using ProjetoFilmes.ViewModels;
 
 namespace ProjetoFilmes.Controllers
 {
@@ -20,6 +22,7 @@ namespace ProjetoFilmes.Controllers
         /// Cria um objeto que recebe os métodos estabelecidos na interface
         /// </summary>
         private IFilmeRepository _filmeRepository;
+        private IGeneroRepository _generoRepository;
 
         /// <summary>
         /// Instancia este objeto com as implementações feitas no repositório
@@ -27,6 +30,7 @@ namespace ProjetoFilmes.Controllers
         public FilmesController()
         {
             _filmeRepository = new FilmeRepository();
+            _generoRepository = new GeneroRepository();
         }
 
         /// <summary>
@@ -36,7 +40,19 @@ namespace ProjetoFilmes.Controllers
         [HttpGet]
         public IActionResult Listar()
         {
-            return Ok(_filmeRepository.Listar());
+            var filmesDb = _filmeRepository.Listar();
+
+            List<FilmeViewModel> filmesVM = new List<FilmeViewModel>();
+
+            foreach (var fm in filmesDb)
+            {
+                var genero = _generoRepository.BuscarPorId(fm.IdGenero);
+
+                FilmeViewModel view = new FilmeViewModel(fm.IdFilme, fm.Titulo, genero.Nome);
+                filmesVM.Add(view);
+            }
+
+            return Ok(filmesVM);
         }
 
         /// <summary>
