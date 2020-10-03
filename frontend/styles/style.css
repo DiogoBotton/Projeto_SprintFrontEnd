@@ -56,4 +56,52 @@ h2 {
     margin-right: auto;
     width: 8em;
 }
+
+#btn-listFilmes {
+    display: block;
+    padding: 1.3em;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #F6511D;
+    border: none;
+    color: white;
+}
 /* --------------Main END-------------- */
+
+/* --------------Footer-------------- */
+.footer > div:nth-child(3){
+    display: flex;
+    flex-direction: column;
+    height: 17vh;
+    /* background-color: yellowgreen; */
+    justify-content: space-between;
+    color: white;
+    font-size: 12px;
+    
+}
+
+.footer hr{
+    width: .1px;
+    height: 20vh;
+    border-left: 1px solid;
+    color: white;
+    background-color: white;
+}
+
+footer{
+    margin-top: 1.5em;
+    background-color: #F6511D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer{
+    width: 50vw;
+    height: 25vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    align-self: center;
+}
+/* --------------Footer END-------------- */
