@@ -66,6 +66,11 @@ h2 {
     border: none;
     color: white;
 }
+
+#busca {
+    margin: 1em;
+    width: 30em;
+}
 /* --------------Main END-------------- */
 
 /* --------------Footer-------------- */

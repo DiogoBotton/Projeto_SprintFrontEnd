@@ -29,6 +29,16 @@ function renderFilmes() {
         });
 }
 
+function filter() {
+    var text = document.getElementById('busca').value;
+
+    var busca = filmesTabela.filter(function (filme) {
+        return filme.titulo.toLowerCase().includes(text.toLowerCase())
+    })
+
+    console.log(busca)
+}
+
 function listar(filmes) {
     // Remove todos os dados da tabela
     //corpo_tabela.remove('tr');
