@@ -1,0 +1,27 @@
+.img-theater {
+    display: flex;
+    justify-content: center;
+}
+
+.icon {
+    width: 2.5em;
+}
+
+.icon:hover {
+    cursor: pointer;
+}
+
+.thead-cor{
+    background: #F6511D;
+    color: #ffffff;
+}
+
+form {
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+}

@@ -1,0 +1,25 @@
+h1 {
+    margin: 1em;
+    text-align: center;
+}
+
+.intro {
+    text-align: justify;
+    margin: 5em;
+}
+
+.filme-categoria {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 5em;
+}
+
+.filme-categoria > div > p {
+    margin: 0 5em 0 0;
+}
+
+img {
+    width: 8em;
+    margin-bottom: 1em;
+}

@@ -1,0 +1,36 @@
+/* --------------HEADER-------------- */
+.logo {
+    width: 9.3em;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3em;
+    width: 100%;
+}
+
+.barra {
+    background: #9BD2DE;
+}
+
+.menu ul {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    font-size: 1em;
+}
+
+.link {
+    text-decoration: none;
+    font-weight: bold;
+    color: #000000;
+    margin: 0 1em 0 1em;
+}
+
+.link:hover {
+    text-decoration: underline;
+    color: #000000;
+}
+/* --------------HEADER END-------------- */
