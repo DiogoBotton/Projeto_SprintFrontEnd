@@ -1,9 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using ProjetoFilmes.Domains;
 
-namespace ProjetoFilmes.Contexts
+namespace ProjetoFilmes.Domains
 {
     public partial class FilmesContext : DbContext
     {
@@ -16,27 +15,26 @@ namespace ProjetoFilmes.Contexts
         {
         }
 
-        public virtual DbSet<Filmes> Filmes { get; set; }
-        public virtual DbSet<Generos> Generos { get; set; }
-        public virtual DbSet<Usuarios> Usuarios { get; set; }
+        public virtual DbSet<Filme> Filmes { get; set; }
+        public virtual DbSet<Genero> Generos { get; set; }
+        public virtual DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-GVQ9O4O\\SQLEXPRESS; initial catalog=FilmesDB; Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS; initial catalog=FilmesDB; Integrated Security=True");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Filmes>(entity =>
+            modelBuilder.Entity<Filme>(entity =>
             {
                 entity.HasKey(e => e.IdFilme);
 
                 entity.HasIndex(e => e.Titulo)
-                    .HasName("UQ__Filmes__7B406B56590ED193")
+                    .HasName("UQ__Filmes__7B406B565B214CD5")
                     .IsUnique();
 
                 entity.Property(e => e.Titulo)
@@ -47,15 +45,15 @@ namespace ProjetoFilmes.Contexts
                 entity.HasOne(d => d.IdGeneroNavigation)
                     .WithMany(p => p.Filmes)
                     .HasForeignKey(d => d.IdGenero)
-                    .HasConstraintName("FK__Filmes__IdGenero__286302EC");
+                    .HasConstraintName("FK__Filmes__IdGenero__3B75D760");
             });
 
-            modelBuilder.Entity<Generos>(entity =>
+            modelBuilder.Entity<Genero>(entity =>
             {
                 entity.HasKey(e => e.IdGenero);
 
                 entity.HasIndex(e => e.Nome)
-                    .HasName("UQ__Generos__7D8FE3B20FA9D656")
+                    .HasName("UQ__Generos__7D8FE3B2417C4675")
                     .IsUnique();
 
                 entity.Property(e => e.Nome)
@@ -64,12 +62,12 @@ namespace ProjetoFilmes.Contexts
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Usuarios>(entity =>
+            modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.IdUsuario);
 
                 entity.HasIndex(e => e.Email)
-                    .HasName("UQ__Usuarios__A9D105342CCC6C90")
+                    .HasName("UQ__Usuarios__A9D10534B6127995")
                     .IsUnique();
 
                 entity.Property(e => e.Email)

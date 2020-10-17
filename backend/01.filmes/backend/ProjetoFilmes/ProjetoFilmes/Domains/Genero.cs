@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace ProjetoFilmes.Domains
 {
-    public partial class Generos
+    public partial class Genero
     {
-        public Generos()
+        public Genero()
         {
-            Filmes = new HashSet<Filmes>();
+            Filmes = new HashSet<Filme>();
         }
 
         public int IdGenero { get; set; }
         public string Nome { get; set; }
 
-        public ICollection<Filmes> Filmes { get; set; }
+        public ICollection<Filme> Filmes { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using ProjetoFilmes.Contexts;
-using ProjetoFilmes.Domains;
+﻿using ProjetoFilmes.Domains;
 using ProjetoFilmes.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +20,9 @@ namespace ProjetoFilmes.Repositories
         /// </summary>
         /// <param name="idAtualizar">ID do gênero que será atualizado</param>
         /// <param name="generoAtualizado">Objeto com as novas informações</param>
-        public void Atualizar(int idAtualizar, Generos generoAtualizado)
+        public void Atualizar(int idAtualizar, Genero generoAtualizado)
         {
-            Generos generoAtual = BuscarPorId(idAtualizar);
+            Genero generoAtual = BuscarPorId(idAtualizar);
 
             if (generoAtual != null)
             {
@@ -40,9 +39,9 @@ namespace ProjetoFilmes.Repositories
         /// </summary>
         /// <param name="idBuscar">ID do gênero que será buscado</param>
         /// <returns>Retorna um gênero buscado</returns>
-        public Generos BuscarPorId(int idBuscar)
+        public Genero BuscarPorId(int idBuscar)
         {
-            Generos generoBuscado = ctx.Generos.Find(idBuscar);
+            Genero generoBuscado = ctx.Generos.Find(idBuscar);
 
             return generoBuscado;
         }
@@ -51,7 +50,7 @@ namespace ProjetoFilmes.Repositories
         /// Cadastra um novo gênero
         /// </summary>
         /// <param name="novoGenero">Objeto com as informações que serão cadastradas</param>
-        public void Cadastrar(Generos novoGenero)
+        public void Cadastrar(Genero novoGenero)
         {
             ctx.Generos.Add(novoGenero);
 
@@ -73,7 +72,7 @@ namespace ProjetoFilmes.Repositories
         /// Lista todos os gêneros
         /// </summary>
         /// <returns>Retorna uma lista de gêneros</returns>
-        public List<Generos> Listar()
+        public List<Genero> Listar()
         {
             return ctx.Generos.ToList();
         }

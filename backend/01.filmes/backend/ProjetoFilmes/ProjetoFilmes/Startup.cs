@@ -10,11 +10,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProjetoFilmes.Interfaces;
+using ProjetoFilmes.Repositories;
 
 namespace ProjetoFilmes
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -24,7 +28,14 @@ namespace ProjetoFilmes
                 .AddMvc()
 
                 // Define a versão compatível do SDK .NET Core
-                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(
+                    options =>
+                    {
+                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; //Remove os looping de retorno
+                        options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore; //retira os campos null
+                    }
+                );
 
             // Documentação Swagger
 
@@ -34,11 +45,46 @@ namespace ProjetoFilmes
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Senai.Filmes.WebApi", Version = "v1" });
 
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                        Name = "Authorization",
+                                    In = ParameterLocation.Header,
+                                    Type = SecuritySchemeType.ApiKey,
+                                    Scheme = "Bearer"
+                                });
+
+                                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
+
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            //services.AddScoped(typeof(IGeneroRepository), typeof(GeneroRepository));
+
+
+
+            
 
             services
                 // Define as configurações de autenticação
@@ -75,16 +121,6 @@ namespace ProjetoFilmes
                         ValidAudience = "Filmes.WebApi"
                     };
                 });
-
-            //Necessário acrescentar política de CORS para ser possível o acesso da API com domínios diferentes
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy", builder => builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,11 +142,10 @@ namespace ProjetoFilmes
                 c.RoutePrefix = string.Empty;
             });
 
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
             // Define o uso de autenticação
             app.UseAuthentication();
-
-            //Usa a "CorsPolicy" criada anteriormente
-            app.UseCors("CorsPolicy");
 
             // Define o uso do MVC
             app.UseMvc();

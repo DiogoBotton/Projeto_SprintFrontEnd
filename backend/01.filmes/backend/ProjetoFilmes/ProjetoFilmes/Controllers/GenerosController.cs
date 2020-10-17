@@ -46,13 +46,13 @@ namespace ProjetoFilmes.Controllers
         /// </summary>
         /// <param name="id">ID do gênero que será buscado</param>
         /// <returns>Retorna um gênero buscado</returns>
-        [Authorize(Roles = "Administrador")]
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult ListarPorId(int id)
         {
             try
             {
-                Generos generoBuscado = _generoRepository.BuscarPorId(id);
+                Genero generoBuscado = _generoRepository.BuscarPorId(id);
 
                 if (generoBuscado != null)
                 {
@@ -73,13 +73,14 @@ namespace ProjetoFilmes.Controllers
         /// <param name="novoGenero">Objeto com as informações que serão cadastradas</param>
         /// <returns>Retorna um status code</returns>
         [HttpPost]
-        public IActionResult Cadastrar(Generos novoGenero)
+        [Authorize]
+        public IActionResult Cadastrar(Genero novoGenero)
         {
             try
             {
                 _generoRepository.Cadastrar(novoGenero);
 
-                return StatusCode(201);
+                return StatusCode(201, novoGenero);
             }
             catch (Exception error)
             {
@@ -94,17 +95,18 @@ namespace ProjetoFilmes.Controllers
         /// <param name="generoAtualizado">Objeto com as novas informações</param>
         /// <returns>Retorna um status code</returns>
         [HttpPut("{id}")]
-        public IActionResult Atualizar(int id, Generos generoAtualizado)
+        [Authorize(Roles = "Administrador")]
+        public IActionResult Atualizar(int id, Genero generoAtualizado)
         {
             try
             {
-                Generos generoBuscado = _generoRepository.BuscarPorId(id);
+                Genero generoBuscado = _generoRepository.BuscarPorId(id);
 
                 if (generoBuscado != null)
                 {
                     _generoRepository.Atualizar(id, generoAtualizado);
 
-                    return StatusCode(204);
+                    return StatusCode(204, generoBuscado);
                 }
 
                 return NotFound("Nenhum gênero encontrado para o ID informado.");
@@ -121,17 +123,18 @@ namespace ProjetoFilmes.Controllers
         /// <param name="id">ID do gênero que será deletado</param>
         /// <returns>Retorna um status code</returns>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Deletar(int id)
         {
             try
             {
-                Generos generoBuscado = _generoRepository.BuscarPorId(id);
+                Genero generoBuscado = _generoRepository.BuscarPorId(id);
 
                 if (generoBuscado != null)
                 {
                     _generoRepository.Deletar(id);
 
-                    return StatusCode(202);
+                    return StatusCode(202, generoBuscado);
                 }
 
                 return NotFound("Nenhum gênero encontrado para o ID informado.");

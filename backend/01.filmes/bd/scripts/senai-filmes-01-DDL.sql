@@ -1,9 +1,9 @@
 -- Cria o banco de dados Filmes
-CREATE DATABASE FilmesDB;
+CREATE DATABASE Filmes;
 GO
 
 -- Define o banco de dados que será utilizado
-USE FilmesDB;
+USE Filmes;
 GO
 
 -- Cria a tabela Generos

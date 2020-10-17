@@ -3,12 +3,18 @@ using System.Collections.Generic;
 
 namespace ProjetoFilmes.Domains
 {
-    public partial class Usuarios
+    public partial class Usuario
     {
         public int IdUsuario { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
         public string Permissao { get; set; }
+
+        public void AlterarEmailNome(string email, string nome)
+        {
+            Email = email;
+            Nome = nome;
+        }
     }
 }

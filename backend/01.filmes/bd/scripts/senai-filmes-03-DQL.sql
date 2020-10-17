@@ -1,5 +1,5 @@
 -- Define o banco de dados que será utilizado
-USE FilmesDB;
+USE Filmes;
 GO
 
 -- Lista todos os gêneros

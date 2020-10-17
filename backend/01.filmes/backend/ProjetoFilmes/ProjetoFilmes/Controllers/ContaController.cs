@@ -18,7 +18,7 @@ namespace ProjetoFilmes.Controllers
 
     // Define que é um controlador de API
     [ApiController]
-    public class LoginController : ControllerBase
+    public class ContaController : ControllerBase
     {
         /// <summary>
         /// Cria um objeto que recebe os métodos estabelecidos na interface
@@ -28,7 +28,7 @@ namespace ProjetoFilmes.Controllers
         /// <summary>
         /// Instancia este objeto com as implementações feitas no repositório
         /// </summary>
-        public LoginController()
+        public ContaController()
         {
             _usuarioRepository = new UsuarioRepository();
         }
@@ -38,13 +38,13 @@ namespace ProjetoFilmes.Controllers
         /// </summary>
         /// <param name="login">Objeto com as informações de login</param>
         /// <returns>Retorna um usuário autenticado</returns>
-        [HttpPost]
+        [HttpPost("login")]
         public IActionResult Login(LoginViewModel login)
         {
             try
             {
                 // Busca um usuário através do e-mail e senha
-                Usuarios usuarioAutenticado = _usuarioRepository.Login(login.Email, login.Senha);
+                Usuario usuarioAutenticado = _usuarioRepository.Login(login.Email, login.Senha);
 
                 // Caso não seja encontrado, retorna o status code 404 com a mensagem de erro
                 if (usuarioAutenticado == null)

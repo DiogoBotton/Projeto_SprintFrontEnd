@@ -1,4 +1,4 @@
-﻿using ProjetoFilmes.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
 using ProjetoFilmes.Domains;
 using ProjetoFilmes.Interfaces;
 using System.Collections.Generic;
@@ -21,13 +21,14 @@ namespace ProjetoFilmes.Repositories
         /// </summary>
         /// <param name="idAtualizar">ID do filme que será atualizado</param>
         /// <param name="filmeAtualizado">Objeto com as novas informações</param>
-        public void Atualizar(int idAtualizar, Filmes filmeAtualizado)
+        public void Atualizar(int idAtualizar, Filme filmeAtualizado)
         {
-            Filmes filmeAtual = BuscarPorId(idAtualizar);
+            Filme filmeAtual = BuscarPorId(idAtualizar);
 
             if (filmeAtual != null)
             {
                 filmeAtual.Titulo = filmeAtualizado.Titulo;
+                filmeAtual.IdGenero = filmeAtualizado.IdGenero;
             }
 
             ctx.Filmes.Update(filmeAtual);
@@ -40,9 +41,9 @@ namespace ProjetoFilmes.Repositories
         /// </summary>
         /// <param name="idBuscar">ID do filme que será buscado</param>
         /// <returns>Retorna um filme buscado</returns>
-        public Filmes BuscarPorId(int idBuscar)
+        public Filme BuscarPorId(int idBuscar)
         {
-            Filmes filmeBuscado = ctx.Filmes.Find(idBuscar);
+            Filme filmeBuscado = ctx.Filmes.Find(idBuscar);
 
             return filmeBuscado;
         }
@@ -51,7 +52,7 @@ namespace ProjetoFilmes.Repositories
         /// Cadastra um novo filme
         /// </summary>
         /// <param name="novoFilme">Objeto com as informações que serão cadastradas</param>
-        public void Cadastrar(Filmes novoFilme)
+        public void Cadastrar(Filme novoFilme)
         {
             ctx.Filmes.Add(novoFilme);
 
@@ -73,9 +74,9 @@ namespace ProjetoFilmes.Repositories
         /// Lista todos os filmes
         /// </summary>
         /// <returns>Retorna uma lista de filmes</returns>
-        public List<Filmes> Listar()
+        public List<Filme> Listar()
         {
-            return ctx.Filmes.ToList();
+            return ctx.Filmes.Include(c => c.IdGeneroNavigation).ToList();
         }
     }
 }

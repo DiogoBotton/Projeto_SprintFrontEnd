@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoFilmes.Domains;
 using ProjetoFilmes.Interfaces;
 using ProjetoFilmes.Repositories;
-using ProjetoFilmes.ViewModels;
 
 namespace ProjetoFilmes.Controllers
 {
@@ -22,7 +21,6 @@ namespace ProjetoFilmes.Controllers
         /// Cria um objeto que recebe os métodos estabelecidos na interface
         /// </summary>
         private IFilmeRepository _filmeRepository;
-        private IGeneroRepository _generoRepository;
 
         /// <summary>
         /// Instancia este objeto com as implementações feitas no repositório
@@ -30,7 +28,6 @@ namespace ProjetoFilmes.Controllers
         public FilmesController()
         {
             _filmeRepository = new FilmeRepository();
-            _generoRepository = new GeneroRepository();
         }
 
         /// <summary>
@@ -38,21 +35,10 @@ namespace ProjetoFilmes.Controllers
         /// </summary>
         /// <returns>Retorna uma lista de filmes</returns>
         [HttpGet]
+        [Authorize]
         public IActionResult Listar()
         {
-            var filmesDb = _filmeRepository.Listar();
-
-            List<FilmeViewModel> filmesVM = new List<FilmeViewModel>();
-
-            foreach (var fm in filmesDb)
-            {
-                var genero = _generoRepository.BuscarPorId(fm.IdGenero);
-
-                FilmeViewModel view = new FilmeViewModel(fm.IdFilme, fm.Titulo, genero.Nome);
-                filmesVM.Add(view);
-            }
-
-            return Ok(filmesVM);
+            return Ok(_filmeRepository.Listar());
         }
 
         /// <summary>
@@ -61,11 +47,12 @@ namespace ProjetoFilmes.Controllers
         /// <param name="id">ID do filme que será buscado</param>
         /// <returns>Retorna um filme buscado</returns>
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult ListarPorId(int id)
         {
             try
             {
-                Filmes filmeBuscado = _filmeRepository.BuscarPorId(id);
+                Filme filmeBuscado = _filmeRepository.BuscarPorId(id);
 
                 if (filmeBuscado != null)
                 {
@@ -86,13 +73,14 @@ namespace ProjetoFilmes.Controllers
         /// <param name="novoFilme"></param>
         /// <returns>Retorna um status code</returns>
         [HttpPost]
-        public IActionResult Cadastrar(Filmes novoFilme)
+        [Authorize(Roles = "Administrador")]
+        public IActionResult Cadastrar(Filme novoFilme)
         {
             try
             {
                 _filmeRepository.Cadastrar(novoFilme);
 
-                return StatusCode(201);
+                return StatusCode(201, novoFilme);
             }
             catch (Exception error)
             {
@@ -107,17 +95,18 @@ namespace ProjetoFilmes.Controllers
         /// <param name="filmeAtualizado">Objeto com as novas informações</param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult Atualizar(int id, Filmes filmeAtualizado)
+        [Authorize(Roles = "Administrador")]
+        public IActionResult Atualizar(int id, Filme filmeAtualizado)
         {
             try
             {
-                Filmes filmeBuscado = _filmeRepository.BuscarPorId(id);
+                Filme filmeBuscado = _filmeRepository.BuscarPorId(id);
 
                 if (filmeBuscado != null)
                 {
                     _filmeRepository.Atualizar(id, filmeAtualizado);
 
-                    return StatusCode(204);
+                    return StatusCode(204, filmeAtualizado);
                 }
 
                 return NotFound("Nenhum filme encontrado para o ID informado.");
@@ -134,17 +123,18 @@ namespace ProjetoFilmes.Controllers
         /// <param name="id">ID do filme que será deletado</param>
         /// <returns>Retorna um status code</returns>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Deletar(int id)
         {
             try
             {
-                Filmes filmeBuscado = _filmeRepository.BuscarPorId(id);
+                Filme filmeBuscado = _filmeRepository.BuscarPorId(id);
 
                 if (filmeBuscado != null)
                 {
                     _filmeRepository.Deletar(id);
 
-                    return StatusCode(202);
+                    return StatusCode(202, filmeBuscado);
                 }
 
                 return NotFound("Nenhum filme encontrado para o ID informado.");
