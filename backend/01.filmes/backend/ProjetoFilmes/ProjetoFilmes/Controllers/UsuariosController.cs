@@ -15,7 +15,7 @@ namespace ProjetoFilmes.Controllers
     [Route("api/[controller]")]
 
     //Somente perfil Administrador tem acesso a este endpoint
-    [Authorize(Roles = "Administrador")]
+    [Authorize]
 
     // Define que é um controlador de API
     [ApiController]

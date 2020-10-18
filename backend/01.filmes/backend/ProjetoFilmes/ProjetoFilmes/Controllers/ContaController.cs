@@ -57,6 +57,8 @@ namespace ProjetoFilmes.Controllers
                 {
                     new Claim(JwtRegisteredClaimNames.Email, usuarioAutenticado.Email),
 
+                    new Claim(JwtRegisteredClaimNames.UniqueName, usuarioAutenticado.Nome),
+
                     new Claim(JwtRegisteredClaimNames.Jti, usuarioAutenticado.IdUsuario.ToString()),
 
                     new Claim(ClaimTypes.Role, usuarioAutenticado.Permissao)

@@ -10,3 +10,7 @@
     color: #ffffff;
     width: 30em;
 }
+
+.table-responsive {
+    min-height: 50em;
+}

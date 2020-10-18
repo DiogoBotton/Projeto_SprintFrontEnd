@@ -4,8 +4,9 @@ import Footer from '../../components/footer/index';
 import Input from '../../components/input/index';
 import Button from '../../components/button/index';
 import api from '../../services/services';
+import * as JWT from 'jwt-decode';
 
-function Perfil() {
+const Perfil = () => {
   const [idUsuario, setIdUsuario] = useState(0);
   const [email, setEmail] = useState('');
   const [nome, setNome] = useState('');
@@ -23,16 +24,17 @@ function Perfil() {
     }
 
     api
-      .post(`Usuarios/${idUsuario}`, form, {
+      .put(`Usuarios/${idUsuario}`, form, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('token-usuario')
         }
       })
       .then(resp => {
-        if(resp.status === 201){
+        if (resp.status === 201) {
           alert(`Usuário alterado com sucesso`)
         }
-        else{
+        else {
           alert('Houve um erro na alteração do seu usuário')
         }
       })
@@ -44,7 +46,7 @@ function Perfil() {
       <Header description="Perfil" />
 
       <div className="centro">
-      <form className="form-container" onSubmit={event => {
+        <form className="form-container" onSubmit={event => {
           event.preventDefault()
           alterarUsuario();
         }}>

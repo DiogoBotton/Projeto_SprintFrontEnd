@@ -93,7 +93,7 @@ function Cadastro() {
           <Input type="text" label="Email" name="email" onChange={e => setEmail(e.target.value)} />
 
           <label htmlFor="select">Selecione uma permissão</label>
-          <select className="form-control" id="select" onChange={e => setPermissao(e.target.value)} value={select}>
+          <select className="form-control" id="select" onChange={e => setPermissao(e.target.value)}>
             <option value="0" disabled={true}>Selecione uma permissão</option>
             {
               select.map((item: any) => {
