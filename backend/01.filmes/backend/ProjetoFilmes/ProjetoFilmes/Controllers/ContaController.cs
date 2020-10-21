@@ -61,7 +61,9 @@ namespace ProjetoFilmes.Controllers
 
                     new Claim(JwtRegisteredClaimNames.Jti, usuarioAutenticado.IdUsuario.ToString()),
 
-                    new Claim(ClaimTypes.Role, usuarioAutenticado.Permissao)
+                    new Claim(ClaimTypes.Role, usuarioAutenticado.Permissao),
+
+                    new Claim("Role", usuarioAutenticado.Permissao)
                 };
 
                 // Define a chave de autenticação

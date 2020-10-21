@@ -110,7 +110,6 @@ const Filmes = () => {
                             <th>#Id</th>
                             <th>Nome</th>
                             <th>Gênero</th>
-                            <th>Ações</th>
                         </tr>
                     </thead>
                     {filmesRender()}

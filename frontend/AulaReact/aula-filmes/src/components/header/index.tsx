@@ -2,8 +2,19 @@ import React from 'react';
 // É necessário o useHistory para enviar (empurrar/push) o usuário para alguma página específica
 import { Link, useHistory } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
-import './style.css'
-import '../../assets/styles/global.css'
+import './style.css';
+import '../../assets/styles/global.css';
+import jwt from 'jwt-decode';
+
+// Interface para obter propriedades do payload do token facilmente
+interface token {
+  email: string,
+  unique_name: string,
+  jti: number,
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": string,
+  iss: string,
+  aud: string
+}
 
 // Interface typescript
 interface HeaderProps {
@@ -18,13 +29,16 @@ const Header: React.FC<HeaderProps> = (props) => {
 
   const token = localStorage.getItem('token-usuario');
 
+  // Verifica se o token é nulo para poder decodifica-lo (necessidade do TypeScript)
+  var tokenDecoded = token === null ? null : jwt<token>(token);
+
   // Botão logout
   const logout = () => {
     // Remove o token do localStorage
     localStorage.removeItem('token-usuario');
 
     // Envia usuário para home
-    history.push('/');
+    history.push('/login');
   }
 
   // Menu que será renderizado se usuário esta logado ou não
@@ -32,27 +46,44 @@ const Header: React.FC<HeaderProps> = (props) => {
     // Token será null ou undefined quando usuário não estiver logado
     if (token === undefined || token === null) {
       return (
-          <ul>
-            <li><Link className="link" to="/">Home</Link></li>
-            <li><Link className="link" to="/login">Login</Link></li>
-            <li><Link className="link" to="/cadastro">Cadastro</Link></li>
-          </ul>
+        <ul>
+          <li><Link className="link" to="/">Home</Link></li>
+          <li><Link className="link" to="/login">Login</Link></li>
+          <li><Link className="link" to="/cadastro">Cadastro</Link></li>
+        </ul>
       );
     }
     else {
-      return (
-        <ul>
-          <li><Link className="link" to="/">Home</Link></li>
-          <li><Link className="link" to="/perfil">Perfil</Link></li>
-          <li><Link className="link" to="/filmes">Filmes</Link></li>
-          <li><Link className="link" to="/generos">Generos</Link></li>
+      if (tokenDecoded?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "Administrador") {
+        return (
+          <ul>
+            <li><Link className="link" to="/">Home</Link></li>
+            <li><Link className="link" to="/perfil">Perfil</Link></li>
+            <li><Link className="link" to="/filmesAdm">Filmes</Link></li>
+            <li><Link className="link" to="/generos">Generos</Link></li>
 
-          <li><Link className="link" to="" onClick={event => {
-            event.preventDefault();
-            logout()
-          }}>Logout</Link></li>
-        </ul>
-      );
+            <li><Link className="link" to="" onClick={event => {
+              event.preventDefault();
+              logout()
+            }}>Logout</Link></li>
+          </ul>
+          );
+      }
+      else {
+
+        return (
+          <ul>
+            <li><Link className="link" to="/">Home</Link></li>
+            <li><Link className="link" to="/perfil">Perfil</Link></li>
+            <li><Link className="link" to="/filmes">Filmes</Link></li>
+
+            <li><Link className="link" to="" onClick={event => {
+              event.preventDefault();
+              logout()
+            }}>Logout</Link></li>
+          </ul>
+        );
+      }
     }
   }
 

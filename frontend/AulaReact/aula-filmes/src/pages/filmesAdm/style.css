@@ -1,0 +1,121 @@
+.conteudo{
+    margin-top: 40px;
+    margin-right: 20%;
+    margin-left: 20%;
+    margin-bottom: 40px;
+}
+
+.box-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.centralizarIMG{
+    width: 80px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.content-table{
+    border-collapse: collapse;
+    font-size: 0.9em;
+    min-width: 300px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba (0,0,0,0.15);
+    height: 10px;
+}
+
+.content-table thead tr {
+    font-family: sans-serif;
+    color: #4B2142;
+    text-align: center;
+    font-weight: bold;
+}
+
+.content-table th{
+    padding: 12px 30px;
+}
+
+.content-table td{
+    padding: 12px 90px;
+    font-family: sans-serif;
+    color: black;
+}
+
+.content-table td img{
+    height: 50px;
+    width: 50px;
+}
+
+.content-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even){
+    background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+    border-bottom: 2px solid rgb(179, 179, 179);
+}
+
+.content-table tbody tr.active-row {
+    font-weight: bold;
+    color:  rgb(179, 179, 179);
+}
+
+th {
+    font-size: 1.3em;
+}
+
+.box-listar-filme h3{
+    font-weight: 600;
+}
+
+.cadastro{
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    
+}
+
+.box-cadastro-filme{
+    width: 60%;
+    margin-top: 50px;
+    display: flex;
+}
+
+
+.box-cadastro-filme label {
+    color: #4B2142;
+    font-family: sans-serif;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+
+input[type=text], select{
+    width: 100%;
+    padding: 20px 20px;
+    margin: 10px 0;
+
+    display: inline-block;
+    border: 1px solid #4e4e4e;
+    box-sizing: border-box;
+}
+
+select{
+    margin-top: 30px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    width:250px
+}
+
+.btn{
+    display: flex;
+    justify-content: flex-end;
+    margin: 40px;
+}

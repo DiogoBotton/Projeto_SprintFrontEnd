@@ -4,7 +4,17 @@ import Footer from '../../components/footer/index';
 import Input from '../../components/input/index';
 import Button from '../../components/button/index';
 import api from '../../services/services';
-import * as JWT from 'jwt-decode';
+import jwtService from '../../services/tokenDecoder';
+import jwt from 'jwt-decode';
+
+interface token {
+  email: string,
+  unique_name: string,
+  jti: number,
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": string,
+  iss: string,
+  aud: string
+}
 
 const Perfil = () => {
   const [idUsuario, setIdUsuario] = useState(0);
@@ -20,23 +30,36 @@ const Perfil = () => {
     const form = {
       nome: nome,
       email: email,
-      permissao: permissao
     }
 
-    api
-      .put(`Usuarios/${idUsuario}`, form, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('token-usuario')
-        }
-      })
-      .then(resp => {
-        if (resp.status === 201) {
-          alert(`Usuário alterado com sucesso`)
-        }
-        else {
-          alert('Houve um erro na alteração do seu usuário')
-        }
+    if (form.nome.length === 0 || form.email.length === 0) return alert('Você não pode deixar os campos de nome ou email vazios.')
+    //var tokenDecoded = jwtService();
+    //if (tokenDecoded == null) return alert('Usuário não está logado ou sessão expirada');
+
+    // setIdUsuario(tokenDecoded.jti);
+
+    // console.log(tokenDecoded);
+
+    var token = localStorage.getItem('token-usuario');
+
+    if (token == null) return alert('Usuário não está logado ou sessão expirada');
+    console.log(jwt<token>(token)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"])
+
+    var id: number = jwt<token>(token).jti;
+    //Altera o ID do usuário do token
+    setIdUsuario(id)
+
+    fetch(`http://localhost:5000/api/Usuarios/${idUsuario}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('token-usuario')
+      },
+      body: JSON.stringify(form)
+    })
+      .then(resp => resp.json())
+      .then(data => {
+        alert('Usuario alterado')
       })
       .catch(error => console.log(error))
   }
