@@ -63,7 +63,7 @@ namespace ProjetoFilmes.Controllers
 
                     new Claim(ClaimTypes.Role, usuarioAutenticado.Permissao),
 
-                    new Claim("Role", usuarioAutenticado.Permissao)
+                    new Claim("role", usuarioAutenticado.Permissao)
                 };
 
                 // Define a chave de autenticação
