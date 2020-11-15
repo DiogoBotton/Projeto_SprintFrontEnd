@@ -1,15 +1,22 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
+
+// Para mandar o usuário para outra página
 import { useHistory } from 'react-router-native';
+
+// "LocalStorage" do React Native
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Input, Button} from 'react-native-elements';
+Icon.loadFont();
+import { Input } from 'react-native-elements';
 
 // Outras bibliotecas
-import { Text, View, Alert } from 'react-native';
+import { Text, View, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 // Componentes
+import Container from '../../components/Container/index';
 // import Input from '../../components/Input/index';
 // import Button from '../../components/Button/index';
 
@@ -47,21 +54,81 @@ const Login = () => {
                     history.push('/home');
                 } else {
                     // Erro caso email ou senha sejam inválidos
+                    Alert.alert(data);
                 }
             })
             .catch((erro) => console.log(erro));
     };
     return (
-        <View>
+        <Container>
+            <Text style={styles.sectionTitle}>Login</Text>
+
             <Input label="Email" onChangeText={(e: any) => setEmail(e)} />
 
-            <Input label="Senha" onChangeText={(e: any) => setEmail(e)} />
+            <Input label="Senha" secureTextEntry={true} onChangeText={(e: any) => setSenha(e)} />
 
-            <Button title="Login" onPress={() => {
+            {/*
+                TouchableOpacity: Outra espécie de botão clicavel para mobile,
+                melhor pois tem mais possibilidades de estilização que o botão
+            */}
+            <View>
+                <TouchableOpacity
+                    style={styles.btnStyle}
+                    onPress={event => {
+                        event.preventDefault();
+                        login();
+                    }}
+                >
+                    <Text style={styles.btnText}>Login</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.cadastrar}
+                    onPress={() => {
+                        history.push('/cadastro-usuario');
+                    }}
+                >
+                    <Text style={styles.cadastrarText}>Cadastre-se</Text>
+                </TouchableOpacity>
+            </View>
+
+            {/* <Button title="Login" style={styles.btnStyle} onPress={() => {
                 login();
-            }} />
-        </View>
+            }} /> */}
+        </Container>
     );
 }
+
+const styles = StyleSheet.create({
+    btnStyle: {
+        backgroundColor: '#F6511D',
+        paddingVertical: 20,
+        paddingHorizontal: 20,
+        borderRadius: 15,
+        alignItems: 'center',
+    },
+    btnText: {
+        color: '#fff',
+        fontSize: 20,
+    },
+    sectionTitle: {
+        fontSize: 24,
+        fontWeight: '600',
+        color: Colors.black,
+        marginBottom: 60,
+    },
+    cadastrar: {
+        marginTop: 10,
+        backgroundColor: '#016799',
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        borderRadius: 15,
+        alignItems: 'center',
+    },
+    cadastrarText: {
+        fontSize: 20,
+        color: '#fff',
+    },
+});
 
 export default Login;
