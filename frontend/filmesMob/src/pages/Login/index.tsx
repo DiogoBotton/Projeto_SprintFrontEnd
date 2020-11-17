@@ -44,16 +44,18 @@ const Login = () => {
             body: JSON.stringify(form),
         };
 
-        fetch('http://localhost:5000/api/Conta/login', init)
+        // Se você estiver executando o servidor e o emulador em seu computador, 127.0.0.1:(port) fará referência ao emulador em si e não ao servidor.
+        // O 10.0.2.2 é a solução para esse problema
+        fetch('http://10.0.2.2:5000/api/conta/login', init)
             .then(resp => resp.json())
             .then(data => {
                 // Verifica se a propriedade token é diferente de indefinida (se a propriedade existe no retorno do json)
                 if (data.token !== undefined) {
                     AsyncStorage.setItem('token-usuario', data.token);
                     // Envia (empurra) pra uma página específica
-                    Alert.alert('toaq');
                     history.push('/home');
-                } else {
+                }
+                else {
                     // Erro caso email ou senha sejam inválidos
                     Alert.alert(data);
                 }

@@ -1,14 +1,16 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 // Necessário definição de tipo do 'children'. Ele será o conteúdo que ficará DENTRO do Container que estamos criando
 function Container(bodyContainer: { children: any }) {
     return (
         <SafeAreaView style={styles.body}>
-            {bodyContainer.children}
+            <ScrollView>
+                {bodyContainer.children}
+            </ScrollView>
         </SafeAreaView>
     );
 }
@@ -19,9 +21,8 @@ const styles = StyleSheet.create({
     },
     body: {
         flex: 1,
-        backgroundColor: Colors.white,
         justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: Colors.white,
     },
     sectionContainer: {
         marginTop: 32,
