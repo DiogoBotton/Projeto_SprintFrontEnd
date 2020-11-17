@@ -44,20 +44,21 @@ const Login = () => {
             body: JSON.stringify(form),
         };
 
-        fetch('http://localhost:5000/api/conta/login', init)
-            .then((resp) => resp.json())
-            .then((data) => {
+        fetch('http://localhost:5000/api/Conta/login', init)
+            .then(resp => resp.json())
+            .then(data => {
                 // Verifica se a propriedade token é diferente de indefinida (se a propriedade existe no retorno do json)
                 if (data.token !== undefined) {
                     AsyncStorage.setItem('token-usuario', data.token);
                     // Envia (empurra) pra uma página específica
+                    Alert.alert('toaq');
                     history.push('/home');
                 } else {
                     // Erro caso email ou senha sejam inválidos
                     Alert.alert(data);
                 }
             })
-            .catch((erro) => console.log(erro));
+            .catch(erro => console.log(erro));
     };
     return (
         <Container>
