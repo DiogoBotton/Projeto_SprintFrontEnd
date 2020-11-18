@@ -64,38 +64,38 @@ const Login = () => {
     };
     return (
         <Container>
-            <Text style={styles.sectionTitle}>Login</Text>
+                <Text style={styles.sectionTitle}>Login</Text>
 
-            <Input label="Email" onChangeText={(e: any) => setEmail(e)} />
+                <Input label="Email" onChangeText={(e: any) => setEmail(e)} />
 
-            <Input label="Senha" secureTextEntry={true} onChangeText={(e: any) => setSenha(e)} />
+                <Input label="Senha" secureTextEntry={true} onChangeText={(e: any) => setSenha(e)} />
 
-            {/*
+                {/*
                 TouchableOpacity: Outra espécie de botão clicavel para mobile,
                 melhor pois tem mais possibilidades de estilização que o botão
             */}
-            <View>
-                <TouchableOpacity
-                    style={styles.btnStyle}
-                    onPress={event => {
-                        event.preventDefault();
-                        login();
-                    }}
-                >
-                    <Text style={styles.btnText}>Login</Text>
-                </TouchableOpacity>
+                <View style={styles.buttonsContainer}>
+                    <TouchableOpacity
+                        style={styles.btnStyle}
+                        onPress={event => {
+                            event.preventDefault();
+                            login();
+                        }}
+                    >
+                        <Text style={styles.btnText}>Login</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={styles.cadastrar}
-                    onPress={() => {
-                        history.push('/cadastro-usuario');
-                    }}
-                >
-                    <Text style={styles.cadastrarText}>Cadastre-se</Text>
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity
+                        style={styles.cadastrar}
+                        onPress={() => {
+                            history.push('/cadastro-usuario');
+                        }}
+                    >
+                        <Text style={styles.cadastrarText}>Cadastre-se</Text>
+                    </TouchableOpacity>
+                </View>
 
-            {/* <Button title="Login" style={styles.btnStyle} onPress={() => {
+                {/* <Button title="Login" style={styles.btnStyle} onPress={() => {
                 login();
             }} /> */}
         </Container>
@@ -114,11 +114,15 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 20,
     },
+    buttonsContainer: {
+        alignItems: 'center',
+    },
     sectionTitle: {
         fontSize: 24,
         fontWeight: '600',
         color: Colors.black,
         marginBottom: 60,
+        textAlign: 'center',
     },
     cadastrar: {
         marginTop: 10,

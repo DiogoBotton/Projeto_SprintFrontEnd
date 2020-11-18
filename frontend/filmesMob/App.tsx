@@ -8,17 +8,20 @@ import { NativeRouter, Route, Switch } from 'react-router-native';
 import Login from './src/pages/Login/index';
 import Home from './src/pages/Home/index';
 
+//import Routes from './src/routes';
+
 // Rotas diretamente no App
 function App() {
   return (
-    <NativeRouter>
-      <Switch>
+     <NativeRouter>
+       <Switch>
 
-        <Route exact path="/" component={Login} />
-        <Route exact path="/home" component={Home} />
+         <Route exact path="/" component={Login} />
+         <Route exact path="/home" component={Home} />
 
-      </Switch>
+       </Switch>
     </NativeRouter>
+    //<Routes />
   );
 }
 
