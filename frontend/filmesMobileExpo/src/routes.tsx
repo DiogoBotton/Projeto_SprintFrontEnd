@@ -70,10 +70,7 @@ function Routes() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Drawer.Navigator initialRouteName="login">
-          <Drawer.Screen name="login" component={Login} />
-          <Drawer.Screen name="home" component={Home} />
-        </Drawer.Navigator>
+        {menu()}
       </NavigationContainer>
     </SafeAreaProvider>
   );

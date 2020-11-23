@@ -52,7 +52,8 @@ const Login = () => {
                 if (data.token !== undefined) {
                     AsyncStorage.setItem('token-usuario', data.token);
                     // Envia (empurra) pra uma página específica
-                    navigation.navigate('home');
+                    //navigation.navigate('home');
+                    
                 }
                 else {
                     // Erro caso email ou senha sejam inválidos
