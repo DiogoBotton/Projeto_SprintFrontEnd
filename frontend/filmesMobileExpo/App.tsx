@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 
 // Rotas
-import Routes from './src/routes/routes';
+import Routes from './src/routes';
 
 function App() {
   return (

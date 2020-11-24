@@ -13,11 +13,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Pages
-import Login from '../pages/Login/index';
-import Home from '../pages/Home/index';
+import Login from './pages/Login/index';
+import Home from './pages/Home/index';
 
 // Jwt Decode
-import jwt from '../services/auth';
+import jwt from './services/auth';
 
 function Routes() {
 
