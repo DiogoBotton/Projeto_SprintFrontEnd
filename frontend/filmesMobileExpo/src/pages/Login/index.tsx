@@ -13,11 +13,10 @@ import { Input } from 'react-native-elements';
 // Outras bibliotecas
 import { Text, View, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import jwt from '../../services/auth';
 
 // Componentes
 import Container from '../../components/Container/index';
-// import Input from '../../components/Input/index';
-// import Button from '../../components/Button/index';
 
 const Login = () => {
     let navigation = useNavigation();
@@ -50,10 +49,19 @@ const Login = () => {
             .then(data => {
                 // Verifica se a propriedade token é diferente de indefinida (se a propriedade existe no retorno do json)
                 if (data.token !== undefined) {
-                    AsyncStorage.setItem('token-usuario', data.token);
+                    AsyncStorage.setItem('token-usuario', data.token)
+                        .then(() => {
+                            if (jwt()?.role === "Administrador") {
+                                navigation.navigate('Adm');
+                            }
+                            else if (jwt()?.role === "Comum") {
+                                navigation.navigate('Comum')
+                            }
+                            else {
+                                navigation.navigate('Login')
+                            }
+                        })
                     // Envia (empurra) pra uma página específica
-                    //navigation.navigate('home');
-                    
                 }
                 else {
                     // Erro caso email ou senha sejam inválidos
@@ -88,7 +96,7 @@ const Login = () => {
                 <TouchableOpacity
                     style={styles.cadastrar}
                     onPress={() => {
-                        navigation.navigate('home');
+                        navigation.navigate('Adm');
                     }}
                 >
                     <Text style={styles.cadastrarText}>Cadastre-se</Text>

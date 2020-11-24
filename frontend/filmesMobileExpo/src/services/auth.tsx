@@ -1,10 +1,19 @@
 // "LocalStorage" do React Native
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// interface Token {
+//     email: string,
+//     unique_name: string,
+//     jti: number,
+//     role: string,
+//     iss: string,
+//     aud: string
+// }
 
-// Função do AsyncStorage necessita do .then pois ele retorna uma promessa (promisse)
+// Tipagem para o retorno da função, diz que irá retornar um 'Token' ou undefined
+// function parseJwt(): Token | undefined
 function parseJwt() {
-    //var token = AsyncStorage.getItem('token-usuario');
-    var token = AsyncStorage.getItem('token-usuario')
+    // Função do AsyncStorage necessita do .then pois ele retorna uma promessa (promisse)
+    AsyncStorage.getItem('token-usuario')
         .then(token => {
             // O TypeScript necessita que haja uma verificação caso token seja nulo
             if (token === null || token === undefined) return null;
