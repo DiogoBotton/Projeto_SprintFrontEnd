@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 // Pois sempre que vamos fazer navegação em pilha, é necessário essa tag por volta, como veremos a frente
 import { NavigationContainer } from '@react-navigation/native';
 
-// Menu lateral
+// Menu lateral e navegação por pilha
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+// Auth Context
+import AuthContext, { AuthProvider } from './context/auth';
 
 // Pages
 import Login from './pages/Login/index';
@@ -17,13 +19,37 @@ import Generos from './pages/Generos/index';
 import Filmes from './pages/Filmes/index';
 
 function Routes() {
-
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
+  const Tab = createBottomTabNavigator();
 
+  // Adquirindo propriedades do authContext
+  const { logged, IsAdmin, IsComum } = useContext(AuthContext);
+
+  // TODO: PROBLEMA, PROPRIEDADES VINDO UNDEFINED
+  console.log('logado? ' +logged + ' é adm? ' + IsAdmin)
+
+  // Stack de Guest (telas de usuário que não está autenticado)
+  const Guest = () => {
+    return (
+      <Tab.Navigator initialRouteName="Login">
+        <Tab.Screen
+          name="Login"
+          component={Login}
+        />
+
+        <Tab.Screen
+          name="Cadastro"
+          component={Cadastro}
+        />
+      </Tab.Navigator>
+    );
+  }
+
+  // Stack de Administrador (telas de adm)
   const Adm = () => {
     return (
-      <Drawer.Navigator>
+      <Drawer.Navigator initialRouteName="Home">
         <Drawer.Screen
           name="Home"
           component={Home}
@@ -40,9 +66,10 @@ function Routes() {
     );
   }
 
+  // Stack de usuário Comum (telas de comum)
   const Comum = () => {
     return (
-      <Drawer.Navigator>
+      <Drawer.Navigator initialRouteName="Home">
         <Drawer.Screen
           name="Home"
           component={Home}
@@ -56,33 +83,38 @@ function Routes() {
   }
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+    <NavigationContainer>
+      <AuthProvider>
 
-          <Stack.Screen
-            name="Login"
-            component={Login}
-          />
-
-          <Stack.Screen
-            name="Cadastro"
-            component={Cadastro}
-          />
-
-          <Stack.Screen
-            name="Adm"
-            component={Adm}
-          />
+        <Stack.Navigator>
+          {/* 
+            Está logado? Se sim, é Admin? Se sim retorna stack de Adm. 
+            Se não, retorna Stack de Comum.
+            Se não estiver logado, retorna stack Guest
+            // TODO: Caindo sempre no Stack 'Guest' por conta dos booleans que estão undefined's
+          */}
           
-          <Stack.Screen
-            name="Comum"
-            component={Comum}
-          />
+          {logged ? IsAdmin ?
+            (<Stack.Screen
+              name="Adm"
+              component={Adm}
+            />) :
+
+            (<Stack.Screen
+              name="Comum"
+              component={Comum}
+            />) :
+
+            (< Stack.Screen
+              name="Guest"
+              component={Guest}
+            />)
+          }
 
         </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+
+      </AuthProvider>
+    </NavigationContainer>
   );
 }
 

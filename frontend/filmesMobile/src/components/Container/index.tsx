@@ -5,12 +5,10 @@ import { StyleSheet, ScrollView } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 // Necessário definição de tipo do 'children'. Ele será o conteúdo que ficará DENTRO do Container que estamos criando
-function Container(bodyContainer: { children: any }) {
+function Container({ children }: any) {
     return (
         <SafeAreaView style={styles.body}>
-            <ScrollView>
-                {bodyContainer.children}
-            </ScrollView>
+            {children}
         </SafeAreaView>
     );
 }

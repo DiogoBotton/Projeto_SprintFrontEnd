@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 // Navegação
 import { useNavigation } from '@react-navigation/native';
@@ -27,6 +27,12 @@ function Cadastro() {
             email: email,
             senha: senha,
             permissao: 'Comum'
+        }
+
+        if (form.email.length === 0 || 
+            form.senha.length === 0 ||
+            form.nome.length === 0) {
+            return Alert.alert('Todos os campos são obrigatórios.');
         }
 
         api
@@ -84,6 +90,8 @@ function Cadastro() {
     return (
         <Container>
 
+            <Text style={styles.sectionTitle}>Cadastre-se</Text>
+
             <Input label="Nome" onChangeText={(e: any) => setNome(e)} />
             <Input label="Email" onChangeText={(e: any) => setEmail(e)} />
 
@@ -119,6 +127,12 @@ const styles = StyleSheet.create({
     },
     buttonsContainer: {
         alignItems: 'center',
+    },
+    sectionTitle: {
+        fontSize: 24,
+        fontWeight: '600',
+        marginBottom: 60,
+        textAlign: 'center',
     },
 });
 

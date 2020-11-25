@@ -1,27 +1,20 @@
-import React, { useState } from 'react';
-
-// Para mandar o usuário para outra página
-import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useState } from 'react';
 
 // "LocalStorage" do React Native
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { Input } from 'react-native-elements';
-
 // Outras bibliotecas
 import { Text, View, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import jwt from '../../services/auth';
+import { Input } from 'react-native-elements';
 
 // Componentes
 import Container from '../../components/Container/index';
 
 const Login = () => {
-    let navigation = useNavigation();
-
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-
+    
     const login = () => {
         const form = {
             email: email,
@@ -29,7 +22,7 @@ const Login = () => {
         };
 
         if (form.email.length === 0 || form.senha.length === 0) {
-            Alert.alert('Preencha os campos de email e senha corretamente.');
+            return Alert.alert('Preencha os campos de email e senha corretamente.');
         }
 
         const init = {
@@ -41,25 +34,15 @@ const Login = () => {
         };
 
         // Se você estiver executando o servidor e o emulador em seu computador, 127.0.0.1:(port) fará referência ao emulador em si e não ao servidor.
-        // O 10.0.2.2 é a solução para esse problema
+        // O 10.0.2.2 é a solução para esse problema 
+        // (atualmente utilizando o IP da maquina para aplicação mobile com EXPO)
         fetch('http://192.168.15.5:5000/api/conta/login', init)
             .then(resp => resp.json())
             .then(data => {
                 // Verifica se a propriedade token é diferente de indefinida (se a propriedade existe no retorno do json)
                 if (data.token !== undefined) {
                     AsyncStorage.setItem('token-usuario', data.token)
-                        .then(() => {
-                            if (jwt()?.role === "Administrador") {
-                                navigation.navigate('Adm');
-                            }
-                            else if (jwt()?.role === "Comum") {
-                                navigation.navigate('Comum')
-                            }
-                            else {
-                                navigation.navigate('Login')
-                            }
-                        })
-                    // Envia (empurra) pra uma página específica
+                    console.log('token: ' + data.token)
                 }
                 else {
                     // Erro caso email ou senha sejam inválidos
@@ -89,15 +72,6 @@ const Login = () => {
                     }}
                 >
                     <Text style={styles.btnText}>Login</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.cadastrar}
-                    onPress={() => {
-                        navigation.navigate('Cadastro');
-                    }}
-                >
-                    <Text style={styles.cadastrarText}>Cadastre-se</Text>
                 </TouchableOpacity>
             </View>
 
