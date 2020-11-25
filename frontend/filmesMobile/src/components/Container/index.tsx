@@ -8,7 +8,9 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 function Container({ children }: any) {
     return (
         <SafeAreaView style={styles.body}>
-            {children}
+            <ScrollView>
+                {children}
+            </ScrollView>
         </SafeAreaView>
     );
 }

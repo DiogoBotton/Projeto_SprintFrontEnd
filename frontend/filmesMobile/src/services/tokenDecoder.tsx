@@ -1,12 +1,5 @@
 // Objeto que será retornado pela função
-interface Token {
-    email: string,
-    unique_name: string,
-    jti: number,
-    role: string,
-    iss: string,
-    aud: string
-}
+import Token from '../interfaces/token';
 
 // Tipagem para o retorno da função, diz que irá retornar um 'Token' ou undefined
 function parseJwt(token: string): Token | null {
