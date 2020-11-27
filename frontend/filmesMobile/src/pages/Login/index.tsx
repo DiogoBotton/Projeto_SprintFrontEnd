@@ -1,22 +1,27 @@
 import React, { useContext, useState } from 'react';
 
-// "LocalStorage" do React Native
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 // Outras bibliotecas
 import { Text, View, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { Input } from 'react-native-elements';
 
+// Context
+import AuthContext from '../../context/auth'; 
+
 // Componentes
 import Container from '../../components/Container/index';
+
+// Interfaces
+import LoginProps from '../../interfaces/login';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+
+    const { SignIn } = useContext(AuthContext);
     
-    const login = () => {
-        const form = {
+    const login = async () => {
+        const form: LoginProps = {
             email: email,
             senha: senha,
         };
@@ -25,31 +30,8 @@ const Login = () => {
             return Alert.alert('Preencha os campos de email e senha corretamente.');
         }
 
-        const init = {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(form),
-        };
-
-        // Se você estiver executando o servidor e o emulador em seu computador, 127.0.0.1:(port) fará referência ao emulador em si e não ao servidor.
-        // O 10.0.2.2 é a solução para esse problema 
-        // (atualmente utilizando o IP da maquina para aplicação mobile com EXPO)
-        fetch('http://192.168.15.5:5000/api/conta/login', init)
-            .then(resp => resp.json())
-            .then(data => {
-                // Verifica se a propriedade token é diferente de indefinida (se a propriedade existe no retorno do json)
-                if (data.token !== undefined) {
-                    AsyncStorage.setItem('token-usuario', data.token)
-                    console.log('token: ' + data.token)
-                }
-                else {
-                    // Erro caso email ou senha sejam inválidos
-                    Alert.alert(data);
-                }
-            })
-            .catch(erro => console.log(erro));
+        // Função do context que irá fazer a autenticação e retornar erro (na própria função) caso precise
+        SignIn(form);
     };
     return (
         <Container>

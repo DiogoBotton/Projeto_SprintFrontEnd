@@ -1,7 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-
-// Pois sempre que vamos fazer navegação em pilha, é necessário essa tag por volta, como veremos a frente
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useContext } from 'react';
 
 // Menu lateral e navegação por pilha
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -9,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Auth Context
-import AuthContext, { AuthProvider } from './context/auth';
+import AuthContext from './context/auth';
 
 // Pages
 import Login from './pages/Login/index';
@@ -17,57 +14,27 @@ import Home from './pages/Home/index';
 import Cadastro from './pages/Cadastro/index';
 import Generos from './pages/Generos/index';
 import Filmes from './pages/Filmes/index';
-
-// Interfaces
-import Token from './interfaces/token';
-
-// Token Decoder
-import jwt from './services/tokenDecoder';
-
-// Async Storage
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActivityIndicator, View } from 'react-native';
 
 function Routes() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
   const Tab = createBottomTabNavigator();
 
-  const [tokenUser, setTokenUser] = useState<Token | null>(null);
-  const [isLogged, setIsLogged] = useState(false);
-
   // Adquirindo propriedades do authContext
-  const { logged, IsAdmin, IsComum } = useContext(AuthContext);
+  const { logged, IsAdmin, isLoading, tokenDecoded, IsComum } = useContext(AuthContext);
 
-  // TODO: PROBLEMA, PROPRIEDADES VINDO UNDEFINED
-  console.log('logado? ' + logged + ' é adm? ' + IsAdmin)
+  // Para adquirir o tokenDecoded, apenas use o contexto como neste exemplo
+  console.log(tokenDecoded)
 
-  // const Logout = async () => {
-  //   await AsyncStorage.removeItem('token-usuario');
-  // }
-
-  const Logged = async () => {
-    const response = await AsyncStorage.getItem('token-usuario');
-
-    if (response !== null) {
-      setIsLogged(true);
-      TokenDecoder(response);
-    }
-    else {
-      setIsLogged(false);
-      setTokenUser(null);
-    }
+  // Caso estiver carregando irá mostrar um ícone de carregamento
+  if(isLoading){
+    return(
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size='large' />
+      </View>
+    );
   }
-
-  const TokenDecoder = (token: string) => {
-    // Token Decoder
-    let tokenDecoded = jwt(token);
-
-    setTokenUser(tokenDecoded);
-  }
-
-  useEffect(() => {
-    Logged();
-  }, [])
 
   // Stack de Guest (telas de usuário que não está autenticado)
   const Guest = () => {
@@ -123,57 +90,32 @@ function Routes() {
   }
 
   return (
-    <NavigationContainer>
-      <AuthProvider>
+    <Stack.Navigator>
+      {/* 
+        Está logado? Se sim, é Admin? Se sim retorna stack de Adm. 
+        Se não, retorna Stack de Comum.
+        Se não estiver logado, retorna stack Guest
+      */}
 
-        <Stack.Navigator>
-          {/* 
-            Está logado? Se sim, é Admin? Se sim retorna stack de Adm. 
-            Se não, retorna Stack de Comum.
-            Se não estiver logado, retorna stack Guest
+      {/* FUNCIONOUU PORAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA */}
+      {logged ? IsAdmin ?
+        (<Stack.Screen
+          name="Adm"
+          component={Adm}
+        />) :
 
-            // TODO: O Redirecionamento funciona, mas não o faz automaticamente logo após logar. Redireciona após atualizar a página.
-          */}
+        (<Stack.Screen
+          name="Comum"
+          component={Comum}
+        />) :
 
-          {isLogged ? tokenUser?.role === 'Administrador' ?
-            (<Stack.Screen
-              name="Adm"
-              component={Adm}
-            />) :
+        (< Stack.Screen
+          name="Guest"
+          component={Guest}
+        />)
+      }
 
-            (<Stack.Screen
-              name="Comum"
-              component={Comum}
-            />) :
-
-            (< Stack.Screen
-              name="Guest"
-              component={Guest}
-            />)
-          }
-
-          {/* //TODO: Caindo sempre no Stack 'Guest' por conta dos booleans que estão undefined's */}
-          {/* {logged ? IsAdmin ?
-            (<Stack.Screen
-              name="Adm"
-              component={Adm}
-            />) :
-
-            (<Stack.Screen
-              name="Comum"
-              component={Comum}
-            />) :
-
-            (< Stack.Screen
-              name="Guest"
-              component={Guest}
-            />)
-          } */}
-
-        </Stack.Navigator>
-
-      </AuthProvider>
-    </NavigationContainer>
+    </Stack.Navigator>
   );
 }
 
