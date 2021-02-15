@@ -1,0 +1,28 @@
+Iniciar uma expressão Regex com colchetes: []
+
+Verificar a partir de qual caracter (quantitativos): {}
+-Dica, usar sempre após outras expressões para colocar a quantidade.
+
+Pode ter ou não na expressão: ? (ponto de interrogação)
+-[0,9]? (pode ter números de zero a 9 ou não)
+
+Grupo de expressão regular que podem se repetir: () parenteres
+-(expressão){quantidade que irá se repetir}
+
+\s -> Depois da expressão, há um espaço em branco. 
+
+
+Exemplos: 
+[A-Z]{1} (verifica se a primeira letra da palavra é maiuscula.
+
+[A-Z]{1}[a-z]{2,} (verifica também se os demais caracteres são letras minúsculas) 
+
+[A-Z]{1}[a-z]{2,}(\s[A-Z]{1}[a-z]{2,}) (verifica qualquer nome, ou qualquer palavra)
+
+[a-z]{3,}[.][][a-z]{3,}[0-9]?[@][.][a-z]{2,3} (verifica se o email há 3 ou mais caracteres entre o primeiro ponto,
+um número de 0 a 9, se houver, um arroba, um ponto e +2 ou 3 caracteres, que correspondem a .com ou .br, por exemplo) 
+
+[a-zA-Z]{8,}[!@#$%&*=]? (Verifica caracteres maiusculas e minusculas, 
+de no minimo 8 caracteres e pode haver caracteres especiais).
+
+[a-z]{2,}[@][a-z]{2,}[.][a-z]{2,3} (Verificação de email, bem básico)
