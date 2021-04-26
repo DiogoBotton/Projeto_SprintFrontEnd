@@ -23,7 +23,7 @@ namespace ProjetoFilmes.Domains
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS; initial catalog=FilmesDB; Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=senaivagas-azuredb.database.windows.net;Initial Catalog=FilmesDB;User Id=wolf;Password=legoshi@123");
             }
         }
 
