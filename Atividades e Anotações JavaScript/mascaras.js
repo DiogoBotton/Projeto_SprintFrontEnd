@@ -74,3 +74,13 @@ function moeda(v) {
     v = v.replace(/(\d{1})(\d{1,4})$/, "$1,$2") // coloca virgula antes dos ultimos 4 digitos
     return v;
 }
+
+// Essa máscara de moeda é melhor!!!
+export const maskCurrency = (val) => {
+    val = val.replace(/\D/g,'');
+	val = (val/100).toFixed(2) + '';
+	val = val.replace(".", ",");
+	val = val.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
+	val = val.replace(/(\d)(\d{3}),/g, "$1.$2,");
+    return val;
+}
